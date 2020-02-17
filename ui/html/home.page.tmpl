@@ -1,0 +1,71 @@
+{{template "base" .}}
+
+{{define "main"}}
+  <h2 class="section title white-text">Claim Environment</h2>
+  <div class="row">
+    {{range .Environments}}
+    <div class="col s12 m4">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{.Image}}" style="height: 220px">
+          <span class="card-title">{{.Name}}</span>
+	  {{if .Claimed}}
+	  <form action='/envs/unclaim/{{.ID}}' method='POST'>
+	    <button type="submit" class="btn-floating pulse halfway-fab waves-effect waves-light red">
+	       <i class="material-icons">error_outline</i>
+	    </button>
+	  </form>
+	  {{else}}
+	  <form action='/envs/claim/{{.ID}}' method='POST'>
+	    <button type="submit" class="btn-floating halfway-fab waves-effect waves-light teal">
+	       <i class="material-icons">code</i>
+	    </button>
+	  </form>
+	  {{end}}
+        </div>
+        <div class="card-content" style="height: 130px">
+	  {{if .Claimed}}
+          <p>Claimed by {{.Claimer}} on {{humanDate .Date}}</p>
+	  {{else}}
+          <p>{{.About}}</p>
+	  {{end}}
+        </div>
+	<div class="card-action">
+             <a class="btn-floating btn-small waves-effect waves-dark grey lighten-3 modal-trigger" data-target="modal-{{.ID}}">
+	       <i class="material-icons black-text">delete</i>
+	     </a>
+             <div id="modal-{{.ID}}" class="modal">
+               <div class="modal-content red-text">
+                  <h4>You really want to delete this environment?</h4>
+                  <p>This can't be undone!</p>
+               </div>
+             <div class="modal-footer">
+	       <form action="/envs/delete/{{.ID}}" method="POST">
+                 <button type="submit" class="btn-flat modal-action waves-effect waves-dark red-text" data-target="modal1">
+	           Confirm
+	         </button>
+	       </form>
+            </div>
+         </div>
+        </div>
+      </div>
+    </div>
+    {{end}}
+    <div class="col s12 m4">
+      <div class="valign-wrapper">
+            <p class="center-align">
+	      <a href=/envs/create class="btn-floating btn-small waves-effect waves-dark grey lighten-3">
+	        <i class="material-icons black-text">add</i>
+	      </a>
+	    </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, null);
+  });
+  </script>
+{{end}}

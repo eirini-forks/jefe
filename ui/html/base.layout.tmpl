@@ -1,0 +1,104 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Jefe</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body class="teal darken-1">
+    <nav class="navatar">
+      <div class="nav-wrapper black">
+        <a href="/" class="brand-logo left"
+          ><img
+            src="https://www.iconsdb.com/icons/preview/white/sombrero-xxl.png"
+        /></a>
+        {{if .Authenticated}}
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+        <ul id="avatar" class="right">
+          <li><img class="circle gitavar" src="{{.Avatar}}" /></li>
+        </ul>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
+            <a>{{.User}}</a>
+          </li>
+        </ul>
+        {{else}}
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="{{.GitHubAuth}}">Login</a></li>
+        </ul>
+        {{ end }}
+      </div>
+    </nav>
+    <div class="container">
+      {{ with.Flash }}
+      <div class="flash white teal-text">{{.}}</div>
+      {{ end }}
+      <main>
+        {{template "main" .}}
+      </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+  <style>
+    .brand-logo img {
+      height: 64px;
+    }
+
+    .gitavar {
+      height: 40px;
+      width: 40px;
+      vertical-align: middle;
+    }
+
+    .flash {
+      min-width: 250px; /* Set a default minimum width */
+      border-radius: 4px; /* Rounded borders */
+      text-align: center; /* Centered text */
+      position: fixed; /* Sit on top of the screen */
+      padding: 16px; /* Padding */
+      margin-left: -125px; /* Divide value of min-width by 2 */
+      right: 1%; /* Center the snackbar */
+      top: 70px; /* 30px from the bottom */
+      -moz-animation: cssAnimation 0s ease-in 5s forwards;
+      /* Firefox */
+      -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+      /* Safari and Chrome */
+      -o-animation: cssAnimation 0s ease-in 5s forwards;
+      /* Opera */
+      animation: cssAnimation 0s ease-in 5s forwards;
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+    }
+    @keyframes cssAnimation {
+      to {
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    }
+    @-webkit-keyframes cssAnimation {
+      to {
+        width: 0;
+        height: 0;
+        padding: 0;
+        visibility: hidden;
+      }
+    }
+
+    .mdl-layout__container { position: relative; }
+  </style>
+</html>
+{{ end }}

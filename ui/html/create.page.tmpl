@@ -1,0 +1,59 @@
+{{template "base" .}}
+
+{{define "main"}}
+{{with .Form}}
+<form action="/envs/create" method="POST">
+  <div class="row">
+    <h2 class="section title black-text">Create Environment</h2>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">mode_edit</i>
+        <input name="envName" id="env_name" type="text" class="validate" />
+        <label for="env_name">Environment Name</label>
+	{{with .Errors.Get "envName"}}
+	<span class="helper-text" data-error="wrong" data-success="right">{{.}}</span>
+	{{end}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">image</i>
+        <input name="envImage" id="env_image" type="text" class="validate" />
+        <label for="env_image">Image URL</label>
+	{{with .Errors.Get "envImage"}}
+	<span class="helper-text" data-error="wrong" data-success="right">{{.}}</span>
+	{{end}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">info</i>
+        <textarea
+          name="envAbout"
+          id="env_about"
+          class="materialize-textarea"
+          data-length="200"
+        ></textarea>
+        <label for="env_about">About</label>
+	{{with .Errors.Get "envAbout"}}
+	<span class="helper-text" data-error="wrong" data-success="ok">{{.}}</span>
+	{{end}}
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light black" type="submit">
+      Create
+      <i class="material-icons right">exposure_plus_1</i>
+    </button>
+    <a href="/" class="waves-effect waves-light btn black"><i class="material-icons right">cancel</i>Cancel</a>
+  </div>
+  </div>
+</form>
+
+
+{{end}}
+<style>
+  .input-field label {
+    color: #eceff1;
+  }
+</style>
+{{ end }}
