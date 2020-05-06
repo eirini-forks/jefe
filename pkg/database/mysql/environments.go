@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	getEnvsStmt   = `SELECT * FROM environments`
-	updateEnvStmt = `UPDATE environments SET claimed = ?, claimer = ?, date = UTC_TIMESTAMP() WHERE id = ?`
-	createEnvStmt = `INSERT INTO environments (name, image, about, date) VALUES (
+	getEnvsStmt    = `SELECT * FROM environments`
+	updateEnvStmt  = `UPDATE environments SET claimed = ?, claimer = ?, date = UTC_TIMESTAMP() WHERE id = ?`
+	unclaimAllStmt = `UPDATE environments SET claimed = false`
+	createEnvStmt  = `INSERT INTO environments (name, image, about, date) VALUES (
 				?,
 				?,
 				?,
@@ -59,6 +60,15 @@ func (e *Environments) Unclaim(id int, user string) error {
 	}
 
 	_, err := e.DB.Exec(updateEnvStmt, false, user, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e *Environments) UnclaimAll() error {
+	_, err := e.DB.Exec(unclaimAllStmt, false, user, id)
 	if err != nil {
 		return err
 	}

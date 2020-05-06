@@ -79,7 +79,12 @@ func (app *application) unclaim(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) unclaimAll(w http.ResponseWriter, r *http.Request) {
-	//todo
+	err = app.Envs.UnclaimAll()
+	if err != nil {
+		app.Session.Put(r, "flash", err.Error())
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) createForm(w http.ResponseWriter, r *http.Request) {
