@@ -79,7 +79,7 @@ func (app *application) unclaim(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) unclaimAll(w http.ResponseWriter, r *http.Request) {
-	err = app.Envs.UnclaimAll()
+	err := app.Envs.UnclaimAll()
 	if err != nil {
 		app.Session.Put(r, "flash", err.Error())
 	}
