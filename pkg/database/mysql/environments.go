@@ -68,7 +68,7 @@ func (e *Environments) Unclaim(id int, user string) error {
 }
 
 func (e *Environments) UnclaimAll() error {
-	_, err := e.DB.Exec(unclaimAllStmt, false, user, id)
+	_, err := e.DB.Exec(unclaimAllStmt)
 	if err != nil {
 		return err
 	}
