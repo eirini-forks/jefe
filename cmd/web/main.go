@@ -27,7 +27,14 @@ type specs struct {
 	GithubClientID string `split_words:"true" required:"true"`
 	GithubSecret   string `split_words:"true" required:"true"`
 	GithubOAuthOrg string `split_words:"true" required:"true"`
+	AdminUser      string `split_words:"true" default:"admin"`
+	AdminPassword  string `split_words:"true" required:"true"`
 	TlsEnabled     string `split_words:"true" default:"false"`
+}
+
+type BasicAuth struct {
+	User     string
+	Password string
 }
 
 type application struct {
@@ -36,6 +43,7 @@ type application struct {
 	GHOAuthOrg string
 	AuthURL    string
 	Session    *sessions.Session
+	BasicAuth  BasicAuth
 }
 
 func main() {
@@ -67,6 +75,11 @@ func main() {
 	// Secure should be used for https connections (check with ingress)
 	// session.Secure = true
 
+	basicAuth := BasicAuth{
+		User:     s.AdminUser,
+		Password: s.AdminPassword,
+	}
+
 	a := application{
 		Envs:       envs,
 		OAuthConf:  oauthCfg,
@@ -77,6 +90,7 @@ func main() {
 			githubAuthorizeUrl,
 			s.GithubClientID,
 		),
+		BasicAuth: basicAuth,
 	}
 
 	handler := a.routes()

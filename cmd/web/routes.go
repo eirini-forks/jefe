@@ -10,6 +10,7 @@ import (
 func (app *application) routes() http.Handler {
 	standardMiddlware := alice.New(app.secureHeaders, app.Session.Enable)
 	dynamicMiddleware := alice.New(app.requireAuth)
+	basicAuth := alice.New(app.requireBasicAuth)
 
 	mux := pat.New()
 
@@ -18,7 +19,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Post("/envs/claim/:id", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.claim)))
 	mux.Post("/envs/unclaim/:id", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.unclaim)))
-	mux.Post("/envs/unclaim", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.unclaimAll)))
+	mux.Put("/envs/unclaim", basicAuth.ThenFunc(http.HandlerFunc(app.unclaimAll)))
 
 	mux.Get("/envs/create", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.createForm)))
 	mux.Post("/envs/create", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.create)))
